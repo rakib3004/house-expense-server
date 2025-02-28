@@ -11,11 +11,11 @@ CORS(app)  # Enable CORS for all routes
 
 # Database connection parameters
 DB_CONFIG = {
-    'host': '172.27.108.250',
-    'port': 5432,
-    'database': 'house_expense',
-    'user': 'postgres',
-    'password': 'P0StGr35'
+    'host': os.getenv('DB_HOST', '172.27.108.250'),
+    'port': int(os.getenv('DB_PORT', 5432)),
+    'database': os.getenv('DB_NAME', 'house_expense'),
+    'user': os.getenv('DB_USER', 'postgres'),
+    'password': os.getenv('DB_PASSWORD', 'P0StGr35')
 }
 
 def get_db_connection():
