@@ -15,10 +15,11 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
+# Copy requirements.txt first to leverage Docker caching
+COPY requirements.txt .
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    python -m pip install -r requirements.txt
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 USER appuser
 
@@ -26,4 +27,5 @@ COPY . .
 
 EXPOSE 5000
 
-CMD gunicorn 'app:app' --bind=0.0.0.0:5000
+# Use JSON array format for CMD
+CMD ["gunicorn", "app:app", "--bind=0.0.0.0:5000"]
